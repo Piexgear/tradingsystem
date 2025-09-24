@@ -22,6 +22,7 @@ bool running = true;
 while (running)
 {
 
+    Console.Clear();
     // Meny som ger val.
     Console.WriteLine("----------TradePoint----------");
     Console.WriteLine("1. Log in");
@@ -64,19 +65,54 @@ while (running)
                 Console.WriteLine("2. Brows");
                 Console.WriteLine("3. Start trade");
                 Console.WriteLine("4. Requests");
+                Console.WriteLine("5. Log out");
                 string input = Console.ReadLine();
+
+                switch (input)
+                {
+                    //case 1 för uppladdandet av items  
+                    case "1":
+                        break;
+
+
+                    // case 2 för browsing av listade items
+                    case "2":
+                        break;
+
+
+                    //case 3 för att starta en trade 
+                    case "3":
+                        break;
+
+
+                    //case 4 för att se alla aktiva eller väntande trades.
+                    case "4":
+                        break;
+
+                    
+                    //case 5 för att kunna logga ut.
+                    case "5":
+                        break;
+                }
             }
 
             break;
-
+        // skapar en ny användare 
         case "2":
+            Console.Clear();
+            Console.Write("Type your username: ");
+            string newUsername = Console.ReadLine();
+
+            Console.Clear();
+            Console.Write("Type your password: ");
+            string new_password = Console.ReadLine();
+
+            // lägger till användaren i listan 
+            users.Add(new User(newUsername, new_password));
+            Console.Clear();
+
+            Console.WriteLine("Successfull registration for user: " + newUsername);
 
             break;
     }
-
-
-
-
-    
-
 }
