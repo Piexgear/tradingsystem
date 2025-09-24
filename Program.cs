@@ -72,6 +72,18 @@ while (running)
                 {
                     //case 1 för uppladdandet av items  
                     case "1":
+                        Console.Clear();
+                        Console.WriteLine("What item would you like to list");
+                        string add = Console.ReadLine();
+
+                        Console.Clear();
+                        Console.WriteLine("Description");
+                        string info = Console.ReadLine();
+
+                        items.Add(new Item(add, info));
+                        Console.Clear();
+                        Console.WriteLine("Item added to list");
+
                         break;
 
 
