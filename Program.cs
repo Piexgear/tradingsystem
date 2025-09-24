@@ -86,12 +86,15 @@ while (running)
                         Console.WriteLine();
                         Console.WriteLine("Press enter to continue...");
 
+                        // försöker skriva ut vad som finns i personens lista. 
+                        Console.WriteLine(users.)
+
                         break;
 
 
                     // case 2 för browsing av listade items
                     case "2":
-                    
+
                         break;
 
 
