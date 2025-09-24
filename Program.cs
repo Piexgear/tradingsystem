@@ -83,12 +83,15 @@ while (running)
                         items.Add(new Item(add, info));
                         Console.Clear();
                         Console.WriteLine("Item added to list");
+                        Console.WriteLine();
+                        Console.WriteLine("Press enter to continue...");
 
                         break;
 
 
                     // case 2 för browsing av listade items
                     case "2":
+                    
                         break;
 
 

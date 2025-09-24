@@ -7,11 +7,14 @@ class User
     public string Username;
     string _password;
 
-    // konstruktor
+    public List<Item> items;
+
+    // konstruktor med ett försök till att ge varje användare en egen lista. 
     public User(string username, string password)
     {
         Username = username;
         _password = password;
+        items = new List<Item>();
 
     }
 
