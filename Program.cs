@@ -1,2 +1,82 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using App;
+
+//skapar listor för användare och föremål
+List<User> users = new List<User>();
+List<Item> items = new List<Item>();
+
+//Lägger till föremål i listan 
+items.Add(new Item("Cykel", "Fin cykel med 5 växlar"));
+items.Add(new Item("Klocka", "Visar tiden"));
+
+// Lägger till users i listan
+users.Add(new User("david", "password"));
+users.Add(new User("manuel", "hej"));
+users.Add(new User("elias", "lasso"));
+
+//skapar en variabel som visar ifall man är inloggad   
+User? active_user = null;
+
+bool running = true;
+
+// skapar en while loop för att programmet ska köra tills jag vill avsluta.
+while (running)
+{
+
+    // Meny som ger val.
+    Console.WriteLine("----------TradePoint----------");
+    Console.WriteLine("1. Log in");
+    Console.WriteLine("2. Create acoount");
+    string menu_choise = Console.ReadLine();
+
+
+    switch (menu_choise)
+    {
+        case "1":
+            // en if satts för att se ifall användaren finns och ifall den inte finns så börjar den om.
+            if (active_user == null)
+            {
+                Console.Clear();
+                //Läser in username
+                Console.Write("Username: ");
+                string username = Console.ReadLine();
+
+                Console.Clear();
+                // läser in lösenord
+                Console.Write("Password: ");
+                string password = Console.ReadLine();
+
+                //går igenom alla användare och lösenord.
+                foreach (User user in users)
+                {
+                    if (user.TryLogin(username, password))
+                    {
+                        active_user = user;
+                        break;
+                    }
+                }
+            }
+
+            // Skapar en ny meny när man är inloggad. 
+            else
+            {
+                Console.WriteLine("----------TradePoint----------");
+                Console.WriteLine("1. Uppload item");
+                Console.WriteLine("2. Brows");
+                Console.WriteLine("3. Start trade");
+                Console.WriteLine("4. Requests");
+                string input = Console.ReadLine();
+            }
+
+            break;
+
+        case "2":
+
+            break;
+    }
+
+
+
+
+    
+
+}
