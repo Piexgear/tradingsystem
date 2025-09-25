@@ -22,6 +22,12 @@ class User
     {
         return username == Username && password == _password;
     }
+
+    public void Additem(string items, string description, User owner)
+    {
+        Item item = new Item(items, description, owner);
+        this.items.Add(item);
+    }
 }
 
     

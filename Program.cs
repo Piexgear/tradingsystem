@@ -26,11 +26,6 @@ A user needs to be able to browse completed requests.
 
 //skapar listor för användare och föremål
 List<User> users = new List<User>();
-List<Item> items = new List<Item>();
-
-//Lägger till föremål i listan 
-items.Add(new Item("Cykel", "Fin cykel med 5 växlar"));
-items.Add(new Item("Klocka", "Visar tiden"));
 
 // Lägger till users i listan
 users.Add(new User("david", "password"));
@@ -47,13 +42,14 @@ while (running)
 {
 
     // meny som ger första valen
-    Console.Clear(); 
+    Console.Clear();
     if (active_user == null)
     {
         // Menyn
         Console.WriteLine("----------TradePoint----------");
         Console.WriteLine("1. Log in");
         Console.WriteLine("2. Create acoount");
+        Console.WriteLine("3. Quit");
         string menu_choise = Console.ReadLine();
 
         // inloggnings kommandot
@@ -97,6 +93,24 @@ while (running)
             Console.WriteLine("Successfull registration for user: " + newUsername);
             Console.WriteLine();
             Console.WriteLine("Press enter to continue...");
+            Console.ReadLine();
+        }
+
+        else if (menu_choise == "3")
+        {
+            Console.WriteLine("Are you sure? Y/N");
+            string yesno = Console.ReadLine();
+            if (yesno == "y")
+            {
+                running = false;
+            }
+        }
+        else
+        {
+            Console.WriteLine("You must enter a valid command. 1, 2 or 3");
+            Console.ReadLine();
+            Console.WriteLine();
+            Console.WriteLine("Press enter to continue...");
         }
     }
 
@@ -125,7 +139,9 @@ while (running)
                 string info = Console.ReadLine();
 
                 // lägger till item i active users personliga lista.
-                active_user.items.Add(new Item(add, info));
+                User owner = active_user;
+                active_user.Additem(add, info, owner);
+
                 Console.Clear();
                 Console.WriteLine("Item added to list");
                 Console.WriteLine();
@@ -143,7 +159,12 @@ while (running)
                 Console.WriteLine("Here is all listed items: ");
                 foreach (User user in users)
                 {
-                    Console.WriteLine(user.items);
+                    foreach (Item item in user.items)
+                        if (user.items != null)
+                        {
+                            Console.WriteLine(item.ShowItem());
+                            Console.WriteLine("---------------------");
+                        }
                 }
                 Console.WriteLine();
                 Console.WriteLine("Press enter to continue...");
