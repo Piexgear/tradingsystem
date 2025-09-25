@@ -160,11 +160,11 @@ while (running)
                 foreach (User user in users)
                 {
                     foreach (Item item in user.items)
-                        if (user.items != null)
-                        {
-                            Console.WriteLine(item.ShowItem());
-                            Console.WriteLine("---------------------");
-                        }
+                    {
+                        if (active_user != user)
+                        Console.WriteLine(item.ShowItem());
+                        Console.WriteLine("---------------------");
+                    }
                 }
                 Console.WriteLine();
                 Console.WriteLine("Press enter to continue...");

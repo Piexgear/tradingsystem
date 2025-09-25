@@ -18,6 +18,6 @@ class Item
     }
     public string ShowItem()
     {
-        return "Item: \n" + Items + "\n\nDescription: \n" + Descrition + "\n\nOwner: \n" + Owner;
+        return "Item: \n" + Items + "\n\nDescription: \n" + Descrition + "\n\nOwner: \n" + Owner.Username;
     }
 }
