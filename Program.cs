@@ -5,9 +5,9 @@ using App;
 A user needs to be able to register an account X
 A user needs to be able to log out. X
 A user needs to be able to log in. X
-A user needs to be able to upload information about the item they wish to trade.
-A user needs to be able to browse a list of other users items.
-A user needs to be able to request a trade for other users items.
+A user needs to be able to upload information about the item they wish to trade. X
+A user needs to be able to browse a list of other users items. X
+A user needs to be able to request a trade for other users items. 
 A user needs to be able to browse trade requests.
 A user needs to be able to accept a trade request.
 A user needs to be able to deny a trade request.
@@ -174,6 +174,21 @@ while (running)
 
             //case 3 för att starta en trade 
             case "3":
+                
+
+                foreach (User user in users)
+                {
+                    foreach (Item item in user.items)
+                    {
+                        if (active_user != user)
+                        {
+                            Console.WriteLine(item.ShowItem());
+                            Console.WriteLine("---------------------");
+                        }
+                    }
+                }
+                Console.WriteLine("What item would you like to trade? ");
+                
                 break;
 
 
