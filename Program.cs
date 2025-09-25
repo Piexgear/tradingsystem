@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.Design;
 using App;
 
-/*A user needs to be able to register an account 
+/*
+A user needs to be able to register an account X
 A user needs to be able to log out. X
 A user needs to be able to log in. X
 A user needs to be able to upload information about the item they wish to trade.
@@ -10,7 +11,8 @@ A user needs to be able to request a trade for other users items.
 A user needs to be able to browse trade requests.
 A user needs to be able to accept a trade request.
 A user needs to be able to deny a trade request.
-A user needs to be able to browse completed requests.*/
+A user needs to be able to browse completed requests.
+*/
 
 
 
@@ -44,16 +46,17 @@ bool running = true;
 while (running)
 {
 
-    Console.Clear();
-    // försöka ändra på inloggningen eftersom att den hoppar tillbaka till menyn även när inlogg är rätt och måste trycka enter en gång innan den går vidare. 
+    // meny som ger första valen
+    Console.Clear(); 
     if (active_user == null)
     {
-        // Meny som ger val.
+        // Menyn
         Console.WriteLine("----------TradePoint----------");
         Console.WriteLine("1. Log in");
         Console.WriteLine("2. Create acoount");
         string menu_choise = Console.ReadLine();
 
+        // inloggnings kommandot
         if (menu_choise == "1")
         {
             Console.Clear();
@@ -75,6 +78,7 @@ while (running)
             }
 
         }
+        // skapa användare kommandot
         else if (menu_choise == "2")
         {
             // skapar en ny användare 
@@ -91,6 +95,8 @@ while (running)
             Console.Clear();
 
             Console.WriteLine("Successfull registration for user: " + newUsername);
+            Console.WriteLine();
+            Console.WriteLine("Press enter to continue...");
         }
     }
 
@@ -103,6 +109,7 @@ while (running)
         Console.WriteLine("3. Start trade");
         Console.WriteLine("4. Requests");
         Console.WriteLine("5. Log out");
+        Console.WriteLine("6. Quit");
         string input = Console.ReadLine();
 
         switch (input)
@@ -117,7 +124,8 @@ while (running)
                 Console.WriteLine("Description");
                 string info = Console.ReadLine();
 
-                items.Add(new Item(add, info));
+                // lägger till item i active users personliga lista.
+                active_user.items.Add(new Item(add, info));
                 Console.Clear();
                 Console.WriteLine("Item added to list");
                 Console.WriteLine();
@@ -131,7 +139,15 @@ while (running)
 
             // case 2 för browsing av listade items
             case "2":
-
+                Console.Clear();
+                Console.WriteLine("Here is all listed items: ");
+                foreach (User user in users)
+                {
+                    Console.WriteLine(user.items);
+                }
+                Console.WriteLine();
+                Console.WriteLine("Press enter to continue...");
+                Console.ReadLine();
                 break;
 
 
@@ -148,6 +164,15 @@ while (running)
             //case 5 för att kunna logga ut.
             case "5":
                 active_user = null;
+                break;
+
+            case "6":
+                Console.WriteLine("Are you sure? Y/N");
+                string yesno = Console.ReadLine();
+                if (yesno == "y")
+                {
+                    running = false;
+                }
                 break;
         }
     }       
