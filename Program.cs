@@ -245,6 +245,27 @@ while (running)
                     //Lägger till föremålet i användarens lista.
                     active_user.Additem(offer, offer_description, Owner);
                 }
+
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("What item would you like to offer?");
+                    foreach (Item item in active_user.items)
+                    {
+                        Console.WriteLine(active_user.items);
+                        Console.WriteLine("---------------------");
+                    }
+                    string offerItem = Console.ReadLine();
+                    foreach (Item item in active_user.items)
+                    {
+                        // fortsätt här
+                        //if (offerItem == active_user.items)
+                        {
+
+                        }
+                    }
+                    
+                }
                 
                 break;
 
