@@ -1,3 +1,5 @@
+using System.Formats.Tar;
+
 namespace App;
 
 //klass User
@@ -27,6 +29,21 @@ class User
     {
         Item item = new Item(items, description, owner);
         this.items.Add(item);
+    }
+}
+
+class Traderequest
+{
+    public User Requester;
+    public Item RequestedItem;
+    public User Owner;
+
+
+    public Traderequest(User requester, Item requestedItem, User owner)
+    {
+        Requester = requester;
+        RequestedItem = requestedItem;
+        Owner = owner;
     }
 }
 

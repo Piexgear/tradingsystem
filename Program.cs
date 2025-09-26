@@ -195,6 +195,9 @@ while (running)
                 Console.WriteLine("What item would you like to trade? ");
                 string Wish_trade = Console.ReadLine();
 
+                // skapar en boolian för att se längre fram ifall det föremålet hittades
+                bool found = false;
+
                 foreach (User user in users)
                 {
                     foreach (Item item in user.items)
@@ -203,8 +206,21 @@ while (running)
                         {
                             Console.WriteLine(item.Items);
                             Console.WriteLine("---------------------");
+                            // ändrar found till true ifall sökningen matchar
+                            found = true;
+                            break;
                         }
                     }
+                    if (found) break;
+                }
+                
+                // låter användaren veta att inget item hittades 
+                if (!found)
+                {
+                    Console.WriteLine("No item found");
+                    Console.WriteLine();
+                    Console.WriteLine("Press enter to continue...");
+                    Console.ReadLine();
                 }
                 
                 break;
