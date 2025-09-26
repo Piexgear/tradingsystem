@@ -36,14 +36,21 @@ class Traderequest
 {
     public User Requester;
     public Item RequestedItem;
+    public Item OfferdItem;
     public User Owner;
 
 
-    public Traderequest(User requester, Item requestedItem, User owner)
+    public Traderequest(User requester, Item requestedItem, Item offerditem, User owner)
     {
         Requester = requester;
         RequestedItem = requestedItem;
+        OfferdItem = offerditem;
         Owner = owner;
+    }
+
+    public string ShowRequest()
+    {
+        return Requester + " wants to trade your: " + RequestedItem + "\nfor: " + OfferdItem;
     }
 }
 

@@ -217,10 +217,33 @@ while (running)
                 // låter användaren veta att inget item hittades 
                 if (!found)
                 {
+                    Console.Clear();
                     Console.WriteLine("No item found");
                     Console.WriteLine();
                     Console.WriteLine("Press enter to continue...");
                     Console.ReadLine();
+                }
+
+                // ifall användaren inte har ett listat item så skapar användaren ett bytes föremål 
+                if (active_user.items == null)
+                {
+                    Console.Clear();
+                    Console.WriteLine("You do not have any listed items to trade with.");
+                    Console.WriteLine("You must add an item to trade");
+                    Console.WriteLine();
+
+                    User Owner = active_user;
+
+                    //Ber användaren lägga till ett item att trade med.
+                    Console.WriteLine("What is your offering item: ");
+                    string offer = Console.ReadLine();
+                    Console.Clear();
+
+                    Console.WriteLine("Description of your item:");
+                    string offer_description = Console.ReadLine();
+                    Console.Clear();
+                    //Lägger till föremålet i användarens lista.
+                    active_user.Additem(offer, offer_description, Owner);
                 }
                 
                 break;
