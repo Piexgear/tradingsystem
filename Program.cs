@@ -157,12 +157,15 @@ while (running)
             case "2":
                 Console.Clear();
                 Console.WriteLine("Here is all listed items: ");
+                //går igenom varje användare
                 foreach (User user in users)
                 {
+                    // går igenom varje användares items 
                     foreach (Item item in user.items)
                     {
+                        //skriver ut allas föremål som inte är den activa användarens föremål                        
                         if (active_user != user)
-                        Console.WriteLine(item.ShowItem());
+                            Console.WriteLine(item.ShowItem());
                         Console.WriteLine("---------------------");
                     }
                 }
@@ -175,11 +178,13 @@ while (running)
             //case 3 för att starta en trade 
             case "3":
                 
-
+                //går igenom varje användare
                 foreach (User user in users)
                 {
+                    // går igenom varje användares items 
                     foreach (Item item in user.items)
                     {
+                        //skriver ut allas föremål som inte är den activa användarens föremål
                         if (active_user != user)
                         {
                             Console.WriteLine(item.ShowItem());
@@ -188,6 +193,19 @@ while (running)
                     }
                 }
                 Console.WriteLine("What item would you like to trade? ");
+                string Wish_trade = Console.ReadLine();
+
+                foreach (User user in users)
+                {
+                    foreach (Item item in user.items)
+                    {
+                        if (active_user != user && Wish_trade == item.Items)
+                        {
+                            Console.WriteLine(item.Items);
+                            Console.WriteLine("---------------------");
+                        }
+                    }
+                }
                 
                 break;
 
