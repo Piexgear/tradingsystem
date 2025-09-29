@@ -32,6 +32,7 @@ class User
     }
 }
 
+//skapar en klass för traderqusts 
 class Traderequest
 {
     public User Requester;

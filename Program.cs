@@ -26,6 +26,7 @@ A user needs to be able to browse completed requests.
 
 //skapar listor för användare och föremål
 List<User> users = new List<User>();
+List<Traderequest> traderequests = new List<Traderequest>();
 
 // Lägger till users i listan
 users.Add(new User("david", "password"));
@@ -165,8 +166,14 @@ while (running)
                     {
                         //skriver ut allas föremål som inte är den activa användarens föremål                        
                         if (active_user != user)
-                            Console.WriteLine(item.ShowItem());
-                        Console.WriteLine("---------------------");
+                        {
+                            if (active_user.items.Count == 0) { }
+                            else
+                            {
+                                Console.WriteLine(item.ShowItem());
+                                Console.WriteLine("---------------------");
+                            }
+                        }
                     }
                 }
                 Console.WriteLine();
@@ -177,7 +184,7 @@ while (running)
 
             //case 3 för att starta en trade 
             case "3":
-                
+                Console.Clear();
                 //går igenom varje användare
                 foreach (User user in users)
                 {
@@ -225,7 +232,7 @@ while (running)
                 }
 
                 // ifall användaren inte har ett listat item så skapar användaren ett bytes föremål 
-                if (active_user.items == null)
+                if (active_user.items.Count == 0)
                 {
                     Console.Clear();
                     Console.WriteLine("You do not have any listed items to trade with.");
@@ -246,37 +253,28 @@ while (running)
                     active_user.Additem(offer, offer_description, Owner);
                 }
 
+                 //Ifall användaren har ett listat item så får man välja ett item istället. 
                 else
                 {
+                    // Användaren har redan ett item som den ska välja och visar alla items i användarens lista.
                     Console.Clear();
                     Console.WriteLine("What item would you like to offer?");
                     foreach (Item item in active_user.items)
                     {
-                        Console.WriteLine(active_user.items);
+                        Console.WriteLine(item.ShowItem());
                         Console.WriteLine("---------------------");
                     }
-
-                    //ifall användaren inte har ett listat Item så ska den lista ett item. 
-                    if (active_user.items == null)
+                    string offerItem = Console.ReadLine();
+                        
+                    //Går igenom användarens items och jämför det med vad user har bett om att trada med. 
+                    foreach (Item item in active_user.items)
                     {
-                        Console.WriteLine("You have no items to offer");
-                        Console.WriteLine();
-
-                        Console.WriteLine("What is your offering item?");
-                        string offer = Console.ReadLine();
-                        Console.Clear();
-
-                        Console.WriteLine("Give a description of your " + offer);
-                        string offer_description = Console.ReadLine();
-
-                        //Lägger till föremålet i dennes lista.
-                        User Owner = active_user;
-                        active_user.Additem(offer, offer_description, Owner);
+                        if (offerItem == item.Items)
+                        {
+                            
+                        }
                     }
-                    // Användaren har redan ett item som den ska välja
-                    string offerItem = Console.ReadLine();                    
-                }
-                
+                }                   
                 break;
 
 
