@@ -255,16 +255,26 @@ while (running)
                         Console.WriteLine(active_user.items);
                         Console.WriteLine("---------------------");
                     }
-                    string offerItem = Console.ReadLine();
-                    foreach (Item item in active_user.items)
-                    {
-                        // fortsätt här
-                        //if (offerItem == active_user.items)
-                        {
 
-                        }
+                    //ifall användaren inte har ett listat Item så ska den lista ett item. 
+                    if (active_user.items == null)
+                    {
+                        Console.WriteLine("You have no items to offer");
+                        Console.WriteLine();
+
+                        Console.WriteLine("What is your offering item?");
+                        string offer = Console.ReadLine();
+                        Console.Clear();
+
+                        Console.WriteLine("Give a description of your " + offer);
+                        string offer_description = Console.ReadLine();
+
+                        //Lägger till föremålet i dennes lista.
+                        User Owner = active_user;
+                        active_user.Additem(offer, offer_description, Owner);
                     }
-                    
+                    // Användaren har redan ett item som den ska välja
+                    string offerItem = Console.ReadLine();                    
                 }
                 
                 break;
@@ -280,6 +290,7 @@ while (running)
                 active_user = null;
                 break;
 
+            // case 6 är för att avsluta programmet
             case "6":
                 Console.WriteLine("Are you sure? Y/N");
                 string yesno = Console.ReadLine();
