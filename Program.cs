@@ -158,25 +158,30 @@ while (running)
             // case 2 för browsing av listade items
             case "2":
                 Console.Clear();
-                Console.WriteLine("Here is all listed items: ");
-                //går igenom varje användare
+                Console.WriteLine("Here is all listed items:");
+
+                int count = 0;
+                // loppar igenom alla användare 
                 foreach (User user in users)
                 {
-                    // går igenom varje användares items 
-                    foreach (Item item in user.items)
+                    //användaren är inte active user
+                    if (user != active_user)
                     {
-                        //skriver ut allas föremål som inte är den activa användarens föremål                        
-                        if (active_user != user)
+                        // loopar igenom användarens items.
+                        foreach (Item item in user.items)
                         {
-                            if (active_user.items.Count == 0) { }
-                            else
-                            {
-                                Console.WriteLine(item.ShowItem());
-                                Console.WriteLine("---------------------");
-                            }
+                            Console.WriteLine(item.ShowItem());
+                            Console.WriteLine("---------------------");
+                            count++;
                         }
                     }
                 }
+                //ifall den inte hittar något listat item så visar jag det
+                if (count == 0)
+                {
+                    Console.WriteLine("No items found from other users.");
+                }
+
                 Console.WriteLine();
                 Console.WriteLine("Press enter to continue...");
                 Console.ReadLine();
@@ -300,7 +305,16 @@ while (running)
             //case 4 för att se alla aktiva eller väntande trades.
             case "4":
                 Console.Clear();
-                if (traderequests.Count == 0)
+                List<Traderequest> userRequest = new List<Traderequest>();
+                foreach (Traderequest requests in traderequests)
+                {
+                    if (requests.Requester == active_user || requests.Owner == active_user)
+                    {
+                        userRequest.Add(requests);
+                    }
+                }
+
+                if (userRequest.Count == 0)
                 {
                     Console.WriteLine("No trade requests found.");
                 }
@@ -328,6 +342,7 @@ while (running)
             case "5":
                 active_user = null;
                 break;
+
 
             // case 6 är för att avsluta programmet
             case "6":
