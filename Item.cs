@@ -21,11 +21,12 @@ class Item
         return "Item: \n" + Items + "\n\nDescription: \n" + Descrition + "\n\nOwner: \n" + Owner.Username;
     }
 
-    public enum Tradestatus
-    {
-        Pending,
-        Accepted,
-        Denied,
-        Completed
-    }
+   
+}
+public enum Tradestatus
+{
+    Pending,
+    Accepted,
+    Denied,
+    Completed
 }

@@ -40,13 +40,17 @@ class Traderequest
     public Item OfferdItem;
     public User Owner;
 
+    public Tradestatus status;
 
-    public Traderequest(User requester, Item requestedItem, Item offerditem, User owner)
+
+    public Traderequest(Item requesteditem, Item offerditem, User requester, User owner)
     {
-        Requester = requester;
-        RequestedItem = requestedItem;
+        RequestedItem = requesteditem;
         OfferdItem = offerditem;
+        Requester = requester;
         Owner = owner;
+        status = Tradestatus.Pending;
+
     }
 
     public string ShowRequest()

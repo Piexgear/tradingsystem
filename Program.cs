@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.Design;
+using System.Security.Cryptography;
 using App;
 
 /*
@@ -185,53 +186,55 @@ while (running)
             //case 3 för att starta en trade 
             case "3":
                 Console.Clear();
-                //går igenom varje användare
+
+                // Visa alla items som tillhör andra användare än den inloggade
                 foreach (User user in users)
                 {
-                    // går igenom varje användares items 
-                    foreach (Item item in user.items)
+                    if (user != active_user)
                     {
-                        //skriver ut allas föremål som inte är den activa användarens föremål
-                        if (active_user != user)
+                        foreach (Item item in user.items)
                         {
                             Console.WriteLine(item.ShowItem());
                             Console.WriteLine("---------------------");
                         }
                     }
                 }
+
                 Console.WriteLine("What item would you like to trade? ");
                 string Wish_trade = Console.ReadLine();
 
-                // skapar en boolian för att se längre fram ifall det föremålet hittades
-                bool found = false;
+                // Leta upp det önskade itemet bland andra användares items
+                Item? requestedItem = null;
+                User? itemOwner = null;
 
                 foreach (User user in users)
                 {
-                    foreach (Item item in user.items)
+                    if (user != active_user)
                     {
-                        if (active_user != user && Wish_trade == item.Items)
+                        foreach (Item item in user.items)
                         {
-                            Console.WriteLine(item.Items);
-                            Console.WriteLine("---------------------");
-                            // ändrar found till true ifall sökningen matchar
-                            found = true;
-                            break;
+                            if (item.Items == Wish_trade)
+                            {
+                                requestedItem = item;
+                                itemOwner = user;
+                                break;
+                            }
                         }
                     }
-                    if (found) break;
+                    if (requestedItem != null) break;
                 }
-                
-                // låter användaren veta att inget item hittades 
-                if (!found)
+
+                if (requestedItem == null)
                 {
                     Console.Clear();
                     Console.WriteLine("No item found");
                     Console.WriteLine();
                     Console.WriteLine("Press enter to continue...");
                     Console.ReadLine();
+                    break;
                 }
 
-                // ifall användaren inte har ett listat item så skapar användaren ett bytes föremål 
+                // Om användaren inte har egna items, be hen lägga till ett item att erbjuda
                 if (active_user.items.Count == 0)
                 {
                     Console.Clear();
@@ -239,9 +242,6 @@ while (running)
                     Console.WriteLine("You must add an item to trade");
                     Console.WriteLine();
 
-                    User Owner = active_user;
-
-                    //Ber användaren lägga till ett item att trade med.
                     Console.WriteLine("What is your offering item: ");
                     string offer = Console.ReadLine();
                     Console.Clear();
@@ -249,37 +249,78 @@ while (running)
                     Console.WriteLine("Description of your item:");
                     string offer_description = Console.ReadLine();
                     Console.Clear();
-                    //Lägger till föremålet i användarens lista.
-                    active_user.Additem(offer, offer_description, Owner);
+
+                    active_user.Additem(offer, offer_description, active_user);
                 }
 
-                 //Ifall användaren har ett listat item så får man välja ett item istället. 
-                else
+                // Visa användarens items för att välja vad de vill erbjuda
+                Console.Clear();
+                Console.WriteLine("What item would you like to offer?");
+                foreach (Item item in active_user.items)
                 {
-                    // Användaren har redan ett item som den ska välja och visar alla items i användarens lista.
+                    Console.WriteLine(item.ShowItem());
+                    Console.WriteLine("---------------------");
+                }
+                string offerItem = Console.ReadLine();
+
+                // Leta upp det erbjudna itemet i användarens lista
+                Item? offeredItem = null;
+                foreach (Item item in active_user.items)
+                {
+                    if (item.Items == offerItem)
+                    {
+                        offeredItem = item;
+                        break;
+                    }
+                }
+
+                if (offeredItem == null)
+                {
                     Console.Clear();
-                    Console.WriteLine("What item would you like to offer?");
-                    foreach (Item item in active_user.items)
-                    {
-                        Console.WriteLine(item.ShowItem());
-                        Console.WriteLine("---------------------");
-                    }
-                    string offerItem = Console.ReadLine();
-                        
-                    //Går igenom användarens items och jämför det med vad user har bett om att trada med. 
-                    foreach (Item item in active_user.items)
-                    {
-                        if (offerItem == item.Items)
-                        {
-                            
-                        }
-                    }
-                }                   
+                    Console.WriteLine("You don't have an item matching that name.");
+                    Console.WriteLine();
+                    Console.WriteLine("Press enter to continue...");
+                    Console.ReadLine();
+                    break;
+                }
+
+                // Skapa trade request och lägg till i listan
+                Traderequest request = new Traderequest(requestedItem, offeredItem, active_user, itemOwner);
+                traderequests.Add(request);
+
+                Console.Clear();
+                Console.WriteLine("Trade request sent!");
+                Console.WriteLine();
+                Console.WriteLine("Press enter to continue...");
+                Console.ReadLine();
+
                 break;
 
 
             //case 4 för att se alla aktiva eller väntande trades.
             case "4":
+                Console.Clear();
+                if (traderequests.Count == 0)
+                {
+                    Console.WriteLine("No trade requests found.");
+                }
+                else
+                {
+                    Console.WriteLine("Active trade requests:");
+                    foreach (Traderequest request1 in traderequests)
+                    {
+                        Console.WriteLine($"Requested Item: {request1.RequestedItem.Items}");
+                        Console.WriteLine($"Offered Item: {request1.OfferdItem.Items}");
+                        Console.WriteLine($"From: {request1.Requester.Username}");
+                        Console.WriteLine($"To: {request1.Owner.Username}");
+                        Console.WriteLine($"Status: {request1.status}");
+                        Console.WriteLine("------------------------------");
+                    }
+                }
+                Console.WriteLine();
+                Console.WriteLine("Press enter to continue...");
+                Console.ReadLine();
+
                 break;
 
 
