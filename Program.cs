@@ -8,11 +8,13 @@ A user needs to be able to log out. X
 A user needs to be able to log in. X
 A user needs to be able to upload information about the item they wish to trade. X
 A user needs to be able to browse a list of other users items. X
-A user needs to be able to request a trade for other users items. 
-A user needs to be able to browse trade requests.
+A user needs to be able to request a trade for other users items. X
+A user needs to be able to browse trade requests. X
 A user needs to be able to accept a trade request.
 A user needs to be able to deny a trade request.
 A user needs to be able to browse completed requests.
+The program needs to save relevant data to the computers file system whenever a state change is made.
+The program needs to be able to start and then automatically load all relevant data so it can function as if it was never closed.
 */
 
 
@@ -320,7 +322,7 @@ while (running)
                 }
                 else
                 {
-                    Console.WriteLine("Active trade requests:");
+                    Console.WriteLine("Active trade requests:\n");
                     foreach (Traderequest request1 in traderequests)
                     {
                         Console.WriteLine($"Requested Item: {request1.RequestedItem.Items}");
@@ -330,6 +332,13 @@ while (running)
                         Console.WriteLine($"Status: {request1.status}");
                         Console.WriteLine("------------------------------");
                     }
+                    Console.WriteLine("\nAccept or Decline offer:");
+                    string AcceptOrDeclined = Console.ReadLine();
+
+                    if (AcceptOrDeclined == "accept")
+                    {
+                        //här ska jag köra på
+                    }               
                 }
                 Console.WriteLine();
                 Console.WriteLine("Press enter to continue...");
