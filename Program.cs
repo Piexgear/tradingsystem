@@ -162,6 +162,7 @@ while (running)
                 Console.Clear();
                 Console.WriteLine("Here is all listed items:");
 
+                //skapar en variabel för att en tom lista ska kunna fungera
                 int count = 0;
                 // loppar igenom alla användare 
                 foreach (User user in users)
@@ -213,7 +214,7 @@ while (running)
                 // Leta upp det önskade itemet bland andra användares items
                 Item? requestedItem = null;
                 User? itemOwner = null;
-
+                //loppar igenom andra användares items 
                 foreach (User user in users)
                 {
                     if (user != active_user)
@@ -222,6 +223,7 @@ while (running)
                         {
                             if (item.Items == Wish_trade)
                             {
+                                // när det önskade item är hittat så bryts loopen
                                 requestedItem = item;
                                 itemOwner = user;
                                 break;
@@ -231,6 +233,7 @@ while (running)
                     if (requestedItem != null) break;
                 }
 
+                //ifall önskade föremålet inte hittades visas felmeddelande. 
                 if (requestedItem == null)
                 {
                     Console.Clear();
@@ -284,7 +287,7 @@ while (running)
                 if (offeredItem == null)
                 {
                     Console.Clear();
-                    Console.WriteLine("You don't have an item matching that name.");
+                    Console.WriteLine("No item found");
                     Console.WriteLine();
                     Console.WriteLine("Press enter to continue...");
                     Console.ReadLine();
@@ -332,19 +335,68 @@ while (running)
                         Console.WriteLine($"Status: {request1.status}");
                         Console.WriteLine("------------------------------");
                     }
-                    Console.WriteLine("\nAccept or Decline offer:");
-                    string AcceptOrDeclined = Console.ReadLine();
 
-                    if (AcceptOrDeclined == "accept")
-                    {
-                        //här ska jag köra på
-                    }               
                 }
-                Console.WriteLine();
-                Console.WriteLine("Press enter to continue...");
-                Console.ReadLine();
 
-                break;
+                Console.WriteLine();
+                Console.WriteLine("\nAccept or Decline offer:");
+                Console.WriteLine("Press enter to continue...");
+                string AcceptOrDeclined = Console.ReadLine();
+
+                if (AcceptOrDeclined == "accept" || AcceptOrDeclined == "decline")
+                {
+                    Console.WriteLine("Which requested item would you like to respond to?");
+                    string itemName = Console.ReadLine();
+
+                    Traderequest? selectedRequest = null;
+
+                    // Hitta rätt request med foreach
+                    foreach (Traderequest req in userRequest)
+                    {
+                        if (req.RequestedItem.Items == itemName && req.Owner == active_user && req.status == Tradestatus.Pending)
+                        {
+                            selectedRequest = req;
+                            break;
+                        }
+                    }
+
+                    if (selectedRequest != null)
+                    {
+
+                        if (AcceptOrDeclined == "accept")
+                        {
+                            selectedRequest.status = Tradestatus.Accepted;
+                            Console.WriteLine("You accepted the trade request.\n");
+                            Console.WriteLine("Press enter to continue...");
+                            Console.ReadLine();
+
+                        }
+
+
+                        else if (AcceptOrDeclined == "decline")
+                        {
+                            selectedRequest.status = Tradestatus.Denied;
+                            Console.WriteLine("You declined the trade request.\n");
+                            Console.WriteLine("Press enter to continue...");
+                            Console.ReadLine();
+                        }
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("No matching trade request found.\n");
+                        Console.WriteLine("Press enter to continue...");
+                        Console.ReadLine();
+                    }
+
+                }
+
+                else
+                {
+                    Console.WriteLine("Invalid input.");
+                }
+                    break;
+                
 
 
             //case 5 för att kunna logga ut.
