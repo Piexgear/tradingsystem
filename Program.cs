@@ -10,8 +10,8 @@ A user needs to be able to upload information about the item they wish to trade.
 A user needs to be able to browse a list of other users items. X
 A user needs to be able to request a trade for other users items. X
 A user needs to be able to browse trade requests. X
-A user needs to be able to accept a trade request.
-A user needs to be able to deny a trade request.
+A user needs to be able to accept a trade request. X
+A user needs to be able to deny a trade request. X
 A user needs to be able to browse completed requests.
 The program needs to save relevant data to the computers file system whenever a state change is made.
 The program needs to be able to start and then automatically load all relevant data so it can function as if it was never closed.
