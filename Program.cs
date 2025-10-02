@@ -25,6 +25,13 @@ The program needs to be able to start and then automatically load all relevant d
 
 
 
+//Path till filer
+string pathUser = Path.Combine("Data", "User.txt");
+string pathItem = Path.Combine("Data", "Item.txt");
+
+// Kalla metod för att se ifall directoryn finns. 
+FileManager.EnsureDirectoryExists(pathUser);
+FileManager.EnsureDirectoryExists(pathItem);
 
 
 //skapar listor för användare och föremål
