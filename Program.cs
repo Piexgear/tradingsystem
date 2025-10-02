@@ -126,8 +126,9 @@ while (running)
         Console.WriteLine("2. Brows");
         Console.WriteLine("3. Start trade");
         Console.WriteLine("4. Requests");
-        Console.WriteLine("5. Log out");
-        Console.WriteLine("6. Quit");
+        Console.WriteLine("5. Complete trades");
+        Console.WriteLine("6. Log out");
+        Console.WriteLine("7. Quit");
         string input = Console.ReadLine();
 
         switch (input)
@@ -328,14 +329,16 @@ while (running)
                     Console.WriteLine("Active trade requests:\n");
                     foreach (Traderequest request1 in traderequests)
                     {
-                        Console.WriteLine($"Requested Item: {request1.RequestedItem.Items}");
-                        Console.WriteLine($"Offered Item: {request1.OfferdItem.Items}");
-                        Console.WriteLine($"From: {request1.Requester.Username}");
-                        Console.WriteLine($"To: {request1.Owner.Username}");
-                        Console.WriteLine($"Status: {request1.status}");
-                        Console.WriteLine("------------------------------");
+                        if (request1.status == Tradestatus.Pending)
+                        {
+                            Console.WriteLine($"Requested Item: {request1.RequestedItem.Items}");
+                            Console.WriteLine($"Offered Item: {request1.OfferdItem.Items}");
+                            Console.WriteLine($"From: {request1.Requester.Username}");
+                            Console.WriteLine($"To: {request1.Owner.Username}");
+                            Console.WriteLine($"Status: {request1.status}");
+                            Console.WriteLine("------------------------------");
+                        }
                     }
-
                 }
 
                 Console.WriteLine();
@@ -395,18 +398,36 @@ while (running)
                 {
                     Console.WriteLine("Invalid input.");
                 }
-                    break;
-                
+                    break;                
 
-
-            //case 5 för att kunna logga ut.
+            //case 5 för att visa alla färdiga trades alltså alla som är complete (Accepted eller declined)
             case "5":
+                foreach (Traderequest trade in traderequests)
+                {
+                    if (trade.status == Tradestatus.Accepted || trade.status == Tradestatus.Denied)
+                    {
+                        Console.WriteLine("-----Complete trades-----\n");
+                        Console.WriteLine($"Requested Item: {trade.RequestedItem.Items}");
+                        Console.WriteLine($"Offered Item: {trade.OfferdItem.Items}");
+                        Console.WriteLine($"From: {trade.Requester.Username}");
+                        Console.WriteLine($"To: {trade.Owner.Username}");
+                        Console.WriteLine($"Status: {trade.status}");
+                        Console.WriteLine("------------------------------");
+                    }
+                }
+                Console.WriteLine("\nPress enter to continue...");
+                Console.ReadLine();
+                break;
+
+
+            //case 6 för att kunna logga ut.
+            case "6":
                 active_user = null;
                 break;
 
 
-            // case 6 är för att avsluta programmet
-            case "6":
+            // case 7 är för att avsluta programmet
+            case "7":
                 Console.WriteLine("Are you sure? Y/N");
                 string yesno = Console.ReadLine();
                 if (yesno == "y")
