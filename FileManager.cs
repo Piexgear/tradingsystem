@@ -155,11 +155,11 @@ public static class FileManager
     public static void ShowItem(string pathItem, User activeUser)
     {
         Console.Clear();
-        Console.WriteLine("Here are all listed items (except your own):\n");
+        Console.WriteLine("Here are all listed items:\n");
 
         if (!File.Exists(pathItem))
         {
-            Console.WriteLine("No items found. (File does not exist)");
+            Console.WriteLine("No items found: ");
         }
         else
         {
@@ -194,4 +194,241 @@ public static class FileManager
         Console.WriteLine("Press enter to continue...");
         Console.ReadLine();
     }
+
+    public static void ShowItemFortrade(string pathItem, User activeUser)
+    {
+        Console.Clear();
+        Console.WriteLine("Here are all listed item:\n");
+
+        if (!File.Exists(pathItem))
+        {
+            Console.WriteLine("No items found. (File does not exist)");
+        }
+        else
+        {
+            string[] lines = File.ReadAllLines(pathItem);
+            bool anyShown = false;
+
+            foreach (string line in lines)
+            {
+                string[] parts = line.Split(';');
+                if (parts.Length == 3)
+                {
+                    string itemName = parts[0];
+                    string description = parts[1];
+                    string ownerUsername = parts[2];
+
+                    if (ownerUsername != activeUser.Username)
+                    {
+                        Console.WriteLine($"Item: {itemName}");
+                        Console.WriteLine($"Description: {description}");
+                        Console.WriteLine($"Listed by: {ownerUsername}");
+                        Console.WriteLine("------------------------------");
+                        anyShown = true;
+                    }
+                }
+            }
+            if (!anyShown)
+            {
+                Console.WriteLine("No items from other users found.");
+            }
+        }
+    }
+
+    public static void ShowUserItems(string pathItem, User user)
+    {
+        Console.Clear();
+        Console.WriteLine($"Items listed by {user.Username}:\n");
+
+        if (!File.Exists(pathItem))
+        {
+            Console.WriteLine("No items found (file does not exist).");
+            Console.WriteLine("\nPress enter to continue...");
+            Console.ReadLine();
+            return;
+        }
+
+        string[] lines = File.ReadAllLines(pathItem);
+        bool found = false;
+
+        foreach (string line in lines)
+        {
+            string[] parts = line.Split(';');
+
+            if (parts.Length == 3)
+            {
+                string itemName = parts[0];
+                string description = parts[1];
+                string ownerUsername = parts[2];
+
+                if (ownerUsername == user.Username)
+                {
+                    Console.WriteLine($"Item: {itemName}");
+                    Console.WriteLine($"Description: {description}");
+                    Console.WriteLine("------------------------------");
+                    found = true;
+                }
+            }
+        }
+        if (!found)
+        {
+            Console.WriteLine("You have not listed any items.");
+        }
+
+        Console.WriteLine("\nPress enter to continue...");
+        Console.ReadLine();
+    }
+
+    public static bool UserHasItems(string pathItem, User user)
+    {
+        if (!File.Exists(pathItem)) return false;
+
+        string[] lines = File.ReadAllLines(pathItem);
+        foreach (string line in lines)
+        {
+            string[] parts = line.Split(';');
+            if (parts.Length == 3)
+            {
+                string ownerUsername = parts[2];
+                if (ownerUsername == user.Username)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static bool CreateTradeRequest(string pathItem, User active_user, List<User> users, List<Traderequest> traderequests)
+    {
+        string[] lines = File.ReadAllLines(pathItem);
+
+        List<Item> otherUserItems = new List<Item>();
+        foreach (string line in lines)
+        {
+            string[] parts = line.Split(';');
+            if (parts.Length == 3)
+            {
+                string itemName = parts[0];
+                string description = parts[1];
+                string ownerUsername = parts[2];
+
+                if (ownerUsername != active_user.Username)
+                {
+                    User owner = null;
+                    foreach (User user in users)
+                    {
+                        if (user.Username == ownerUsername)
+                        {
+                            owner = user;
+                            break;
+                        }
+                    }
+                    if (owner != null)
+                    {
+                        otherUserItems.Add(new Item(itemName, description, owner));
+                    }
+                }
+            }
+        }
+
+        Console.Clear();
+        Console.WriteLine("Here are items from other users:\n");
+        foreach (Item item in otherUserItems)
+        {
+            Console.WriteLine($"Item: {item.Items}");
+            Console.WriteLine($"Description: {item.Descrition}");
+            Console.WriteLine($"Listed by: {item.Owner.Username}");
+            Console.WriteLine("------------------------------");
+        }
+
+        Console.WriteLine("Enter the name of the item you want to trade:");
+        string wishedItemName = Console.ReadLine();
+
+        Item requestedItem = null;
+        foreach (Item item in otherUserItems)
+        {
+            if (item.Items == wishedItemName)
+            {
+                requestedItem = item;
+                break;
+            }
+        }
+
+        if (requestedItem == null)
+        {
+            Console.WriteLine("Item not found.");
+            Console.WriteLine("Press enter to continue...");
+            Console.ReadLine();
+            return false;
+        }
+
+        // Kontrollera att active_user har items i filen
+        List<Item> activeUserItems = new List<Item>();
+        foreach (string line in lines)
+        {
+            string[] parts = line.Split(';');
+            if (parts.Length == 3)
+            {
+                string itemName = parts[0];
+                string description = parts[1];
+                string ownerUsername = parts[2];
+
+                if (ownerUsername == active_user.Username)
+                {
+                    activeUserItems.Add(new Item(itemName, description, active_user));
+                }
+            }
+        }
+
+        if (activeUserItems.Count == 0)
+        {
+            Console.WriteLine("You don't have any items listed to offer.");
+            Console.WriteLine("You must add an item to trade.");
+            FileManager.AddItem(pathItem, active_user);
+            return false;
+        }
+
+        Console.Clear();
+        Console.WriteLine("Your listed items:\n");
+        foreach (Item item in activeUserItems)
+        {
+            Console.WriteLine($"Item: {item.Items}");
+            Console.WriteLine($"Description: {item.Descrition}");
+            Console.WriteLine("------------------------------");
+        }
+
+        Console.WriteLine("Enter the name of the item you want to offer:");
+        string offerItemName = Console.ReadLine();
+
+        Item offeredItem = null;
+        foreach (Item item in activeUserItems)
+        {
+            if (item.Items == offerItemName)
+            {
+                offeredItem = item;
+                break;
+            }
+        }
+
+        if (offeredItem == null)
+        {
+            Console.WriteLine("Offered item not found.");
+            Console.WriteLine("Press enter to continue...");
+            Console.ReadLine();
+            return false;
+        }
+
+        Traderequest request = new Traderequest(requestedItem, offeredItem, active_user, requestedItem.Owner);
+        traderequests.Add(request);
+
+        Console.Clear();
+        Console.WriteLine("Trade request sent!");
+        Console.WriteLine();
+        Console.WriteLine("Press enter to continue...");
+        Console.ReadLine();
+
+        return true;
+    }
 }
+

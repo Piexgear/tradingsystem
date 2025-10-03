@@ -1,3 +1,4 @@
 cykel;snabb;david
 dator;långsam;david
 badrumsmatta;blöt;max
+klocka;visar tiden;sofia
