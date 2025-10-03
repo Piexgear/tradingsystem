@@ -12,8 +12,8 @@ A user needs to be able to request a trade for other users items. X
 A user needs to be able to browse trade requests. X
 A user needs to be able to accept a trade request. X
 A user needs to be able to deny a trade request. X
-A user needs to be able to browse completed requests.
-The program needs to save relevant data to the computers file system whenever a state change is made.
+A user needs to be able to browse completed requests. X
+The program needs to save relevant data to the computers file system whenever a state change is made. X
 The program needs to be able to start and then automatically load all relevant data so it can function as if it was never closed.
 */
 
@@ -35,7 +35,8 @@ FileManager.EnsureDirectoryExists(pathItem);
 
 
 //skapar listor för användare och föremål
-List<User> users = new List<User>();
+List<User> users = FileManager.LoadUsers(pathUser);
+FileManager.LoadItems(pathItem, users);
 List<Traderequest> traderequests = new List<Traderequest>();
 
 // Lägger till users i listan
@@ -197,7 +198,10 @@ while (running)
 
             // case 2 för browsing av listade items
             case "2":
-                Console.Clear();
+                FileManager.ShowItem(pathItem, active_user);
+
+                // gammla sättet 
+                /*Console.Clear();
                 Console.WriteLine("Here is all listed items:");
 
                 //skapar en variabel för att en tom lista ska kunna fungera
@@ -226,6 +230,7 @@ while (running)
                 Console.WriteLine();
                 Console.WriteLine("Press enter to continue...");
                 Console.ReadLine();
+                */
                 break;
 
 

@@ -42,30 +42,6 @@ namespace App;
         return new Item(itemNamen, description, owner);
     }
 
-    public static void ShowItemsForUser(string pathItem, User user)
-    {
-        if (!File.Exists(pathItem))
-        { return; }
-
-        using (StreamReader reader = new StreamReader(pathItem))
-        {
-            string line;
-            while ((line = reader.ReadLine()) != null)
-            {
-                if (!string.IsNullOrWhiteSpace(line))
-                {
-                    string[] parts = line.Split(";");
-
-                    if (parts.Length >= 3 && parts[2] == user.Username)
-                    {
-                        Item item = new Item(parts[0], parts[1], user);
-                        user.items.Add(item);
-                    }
-                }
-            }
-        }
-    }
-
 }
 public enum Tradestatus
 {

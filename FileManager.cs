@@ -43,34 +43,34 @@ public static class FileManager
     }
 
     public static void AddItem(string pathItem, User active_user)
-{
-    Console.Clear();
-    Console.WriteLine("What item would you like to list?");
-    string itemName = Console.ReadLine();
+    {
+        Console.Clear();
+        Console.WriteLine("What item would you like to list?");
+        string itemName = Console.ReadLine();
 
-    Console.Clear();
-    Console.WriteLine("Description:");
-    string description = Console.ReadLine();
+        Console.Clear();
+        Console.WriteLine("Description:");
+        string description = Console.ReadLine();
 
-    // Skapa item
-    Item newItem = new Item(itemName, description, active_user);
+        // Skapa item
+        Item newItem = new Item(itemName, description, active_user);
 
-    // Lägg till i items lista
-    active_user.items.Add(newItem);
+        // Lägg till i items lista
+        active_user.items.Add(newItem);
 
-    using (StreamWriter writer = new StreamWriter(pathItem, append: true))
+        using (StreamWriter writer = new StreamWriter(pathItem, append: true))
         {
             // Skriver användarens data som en rad i filen
             writer.WriteLine(newItem.ToFileString());
             // Filen sparas och stängs automatiskt här
         }
 
-    Console.Clear();
-    Console.WriteLine("Item added to your list!");
-    Console.WriteLine();
-    Console.WriteLine("Press enter to continue...");
-    Console.ReadLine();
-}
+        Console.Clear();
+        Console.WriteLine("Item added to your list!");
+        Console.WriteLine();
+        Console.WriteLine("Press enter to continue...");
+        Console.ReadLine();
+    }
 
 
     public static bool UserExists(string filePath, string username)
@@ -98,4 +98,100 @@ public static class FileManager
         return false;
     }
 
+    public static List<User> LoadUsers(string path)
+    {
+        List<User> users = new();
+        if (File.Exists(path))
+        {
+            using (StreamReader reader = new StreamReader(path))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (!string.IsNullOrWhiteSpace(line))
+                    {
+                        User user = User.FromFileString(line);
+                        users.Add(user);
+                    }
+                }
+            }
+        }
+        return users;
+    }
+
+    public static void LoadItems(string path, List<User> users)
+    {
+        if (!File.Exists(path)) return;
+
+        string[] lines = File.ReadAllLines(path);
+        foreach (string line in lines)
+        {
+            string[] parts = line.Split(';');
+            if (parts.Length != 3)
+            {
+                continue;
+            }
+
+            string itemName = parts[0];
+            string description = parts[1];
+            string ownerUsername = parts[2];
+
+            User owner = null;
+            foreach (User user in users)
+            {
+                if (user.Username == ownerUsername)
+                {
+                    owner = user;
+                    break;
+                }
+            }
+            if (owner != null)
+            {
+                owner.items.Add(new Item(itemName, description, owner));
+            }
+        }
+    }
+
+    public static void ShowItem(string pathItem, User activeUser)
+    {
+        Console.Clear();
+        Console.WriteLine("Here are all listed items (except your own):\n");
+
+        if (!File.Exists(pathItem))
+        {
+            Console.WriteLine("No items found. (File does not exist)");
+        }
+        else
+        {
+            string[] lines = File.ReadAllLines(pathItem);
+            bool anyShown = false;
+
+            foreach (string line in lines)
+            {
+                string[] parts = line.Split(';');
+                if (parts.Length == 3)
+                {
+                    string itemName = parts[0];
+                    string description = parts[1];
+                    string ownerUsername = parts[2];
+
+                    if (ownerUsername != activeUser.Username)
+                    {
+                        Console.WriteLine($"Item: {itemName}");
+                        Console.WriteLine($"Description: {description}");
+                        Console.WriteLine($"Listed by: {ownerUsername}");
+                        Console.WriteLine("------------------------------");
+                        anyShown = true;
+                    }
+                }
+            }
+            if (!anyShown)
+            {
+                Console.WriteLine("No items from other users found.");
+            }
+        }
+        Console.WriteLine();
+        Console.WriteLine("Press enter to continue...");
+        Console.ReadLine();
+    }
 }
