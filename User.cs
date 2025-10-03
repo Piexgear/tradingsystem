@@ -3,7 +3,7 @@ using System.Formats.Tar;
 namespace App;
 
 //klass User
-class User
+public class User
 {
     //skapar variabler som User ska ha
     public string Username;

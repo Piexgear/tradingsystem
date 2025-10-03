@@ -1,1 +1,5 @@
 max;password
+david;password
+manuel;hej
+elias;lasso
+

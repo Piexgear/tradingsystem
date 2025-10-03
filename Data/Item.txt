@@ -1,0 +1,3 @@
+cykel;snabb;david
+dator;långsam;david
+badrumsmatta;blöt;max

@@ -75,21 +75,50 @@ while (running)
             Console.Write("Password: ");
             string password = Console.ReadLine();
             //går igenom alla användare och lösenord.
-            foreach (User user in users)
+
+
+            // Försök läsa alla användare från filen
+            bool loginSuccess = false;
+
+            if (File.Exists(pathUser))
             {
-                if (user.TryLogin(username, password))
+                using (StreamReader reader = new StreamReader(pathUser))
                 {
-                    active_user = user;
-                    break;
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        if (!string.IsNullOrWhiteSpace(line))
+                        {
+                            User userFromFile = User.FromFileString(line);
+
+                            if (userFromFile.TryLogin(username, password))
+                            {
+                                active_user = userFromFile;
+                                users.Add(userFromFile);
+                                loginSuccess = true;
+                                break;
+                            }
+                        }
+                    }
                 }
             }
-
+            if (loginSuccess)
+            { }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("Incorrect username or password.");
+                Console.WriteLine("Press enter to try again...");
+                Console.ReadLine();
+            }
         }
+
         // skapa användare kommandot
         else if (menu_choise == "2")
         {
             FileManager.AddUser(pathUser);
             // skapar en ny användare 
+            // det gammla sättet
             /*Console.Clear();
             Console.Write("Type your username: ");
             string newUsername = Console.ReadLine();
@@ -143,10 +172,13 @@ while (running)
         {
             //case 1 för uppladdandet av items  
             case "1":
+
+                FileManager.AddItem(pathItem, active_user);
+
+                /*
                 Console.Clear();
                 Console.WriteLine("What item would you like to list");
                 string add = Console.ReadLine();
-
                 Console.Clear();
                 Console.WriteLine("Description");
                 string info = Console.ReadLine();
@@ -154,15 +186,12 @@ while (running)
                 // lägger till item i active users personliga lista.
                 User owner = active_user;
                 active_user.Additem(add, info, owner);
-
+                   
                 Console.Clear();
                 Console.WriteLine("Item added to list");
                 Console.WriteLine();
                 Console.WriteLine("Press enter to continue...");
-
-                // försöker skriva ut vad som finns i personens lista. 
-                //Console.WriteLine(users.);
-
+                */
                 break;
 
 
@@ -364,7 +393,7 @@ while (running)
                     // Hitta rätt request med foreach
                     foreach (Traderequest req in userRequest)
                     {
-                        if (req.RequestedItem.Items == itemName && req.Owner == active_user && req.status == Tradestatus.Pending)
+                        if (req.OfferdItem.Items == itemName && req.Owner == active_user && req.status == Tradestatus.Pending)
                         {
                             selectedRequest = req;
                             break;
@@ -407,6 +436,7 @@ while (running)
                     Console.WriteLine("Invalid input.");
                 }
                     break;                
+
 
             //case 5 för att visa alla färdiga trades alltså alla som är complete (Accepted eller declined)
             case "5":
