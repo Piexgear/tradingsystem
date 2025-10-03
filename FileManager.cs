@@ -11,28 +11,32 @@ public static class FileManager
         }
     }
 
-    public static void SaveUsersToFile(string filePath, List<User> users)
+    public static void AddUser(string pathUser)
     {
-        using (StreamWriter writer = new StreamWriter(filePath))
-        {
-            foreach (User user in users)
-            {
-                writer.WriteLine($"{user.Username};{user.GetPassword()}");
-            }
-        }
-    }
+        Console.Clear();
+        // Ber användaren skriva in ett användarnamn
+        Console.Write("Type your Username: ");
+        // Läser användarnamnet från konsolen
+        string newUsername = Console.ReadLine();
 
-    public static void SaveItemsToFile(string filePath, List<User> users)
-    {
-        using (StreamWriter writer = new StreamWriter(filePath))
+        // Ber användaren skriva in lösenord
+        Console.Write("Type your Password: ");
+        // Läser lösenord från konsolen
+        string newPassword = Console.ReadLine();
+
+        // Skapar ett nytt User-objekt med den inmatade datan
+        User newUser = new User(newUsername, newPassword);
+
+        // Öppnar filen för att lägga till text i slutet (append mode)
+        using (StreamWriter writer = new StreamWriter(pathUser, append: true))
         {
-            foreach (User user in users)
-            {
-                foreach (Item item in user.items)
-                {
-                    writer.WriteLine($"{item.Items};{item.Descrition};{user.Username}");
-                }
-            }
+            // Skriver användarens data som en rad i filen
+            writer.WriteLine(newUser.ToFileString());
+            // Filen sparas och stängs automatiskt här
         }
+
+        // Bekräftar att användaren sparades
+        Console.WriteLine($"Användare '{newUsername}' har lagts till!");
+        Console.ReadLine();
     }
 }

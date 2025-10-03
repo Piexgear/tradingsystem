@@ -88,8 +88,9 @@ while (running)
         // skapa användare kommandot
         else if (menu_choise == "2")
         {
+            FileManager.AddUser(pathUser);
             // skapar en ny användare 
-            Console.Clear();
+            /*Console.Clear();
             Console.Write("Type your username: ");
             string newUsername = Console.ReadLine();
 
@@ -104,7 +105,7 @@ while (running)
             Console.WriteLine("Successfull registration for user: " + newUsername);
             Console.WriteLine();
             Console.WriteLine("Press enter to continue...");
-            Console.ReadLine();
+            Console.ReadLine();*/
         }
 
         else if (menu_choise == "3")

@@ -30,6 +30,21 @@ class User
         Item item = new Item(items, description, owner);
         this.items.Add(item);
     }
+
+    //Spara användare till fil
+    public string ToFileString()
+    {
+        return $"{Username};{_password}";
+    }
+
+    //läser från fil till string
+    public static User FromFileString(string line)
+    {
+        // Delar upp textraden vid semikolon (resulterar i en array)
+        string[] parts = line.Split(';');
+        // Skapar och returnerar ett nytt User-objekt med email och lösenord
+        return new User(parts[0], parts[1]);
+    }
 }
 
 //skapar en klass för traderqusts 
